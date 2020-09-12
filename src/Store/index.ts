@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 import gameStateReducer, { GameState } from './GameState/reducer';
 

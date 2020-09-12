@@ -1,7 +1,5 @@
 import { Level } from './../../Components/DifficultyLevel/DifficultyLevel';
-import { CellValue } from '../../Components/GameBoard/CellType';
 import { Player } from '../../Components/GameBoard/useGameState';
-import { GameResult } from '../../Components/GameBoard/Utils';
 
 import {
 	GameStateActionTypes,

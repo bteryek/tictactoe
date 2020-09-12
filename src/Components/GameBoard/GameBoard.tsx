@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './GameBoard.scss';
 import _ from 'lodash';
 import Cell from '../Cell';
@@ -10,11 +10,7 @@ import { GameState } from '../../Store/GameState/reducer';
 import { incrementScore } from '../../Store/GameState/actions';
 import Status from '../Status';
 
-interface Props {
-	// size: number;
-}
-
-const GameBoard: React.FunctionComponent<Props> = ({}) => {
+const GameBoard: React.FunctionComponent = () => {
 	const { gridSize, level } = useSelector<RootState, GameState>(
 		(state) => state.gameState
 	);
@@ -31,10 +27,7 @@ const GameBoard: React.FunctionComponent<Props> = ({}) => {
 		dispatch(incrementScore(gameResult.player!));
 	}, [gameResult.winner]);
 
-	// console.log('GAME RESULT', gameResult);
-
 	const rows = _.chunk(grid, gridSize);
-	// console.log('grid size', grid.length, gridSize, rows);
 
 	const onCellSelected = (index: number) => {
 		if (grid[index] !== CellValue.Empty || gameResult.winner) return;
@@ -42,9 +35,7 @@ const GameBoard: React.FunctionComponent<Props> = ({}) => {
 		setCell(index, value, activePlayer);
 	};
 
-	if (gameResult.winner) {
-		console.log(gameResult.sequence, gameResult.orientation);
-	}
+	const winningSequence = gameResult.sequence || [];
 
 	return (
 		<div className='GameBoard'>
@@ -69,10 +60,12 @@ const GameBoard: React.FunctionComponent<Props> = ({}) => {
 						<div key={i} className='row'>
 							{row.map((c: CellValue, index: number) => {
 								const position = i * gridSize + index;
+								const highlight = winningSequence.indexOf(position) !== -1;
 								return (
 									<Cell
 										key={position}
 										onSelect={onCellSelected}
+										highlight={highlight}
 										value={c}
 										index={position}
 									/>

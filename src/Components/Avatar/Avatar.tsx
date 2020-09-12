@@ -19,7 +19,7 @@ const Avatar: React.FC<Props> = ({ name, imgUrl, player }) => {
 
 	return (
 		<div className='Avatar'>
-			<img src={imgUrl} />
+			<img alt='Avatar' src={imgUrl} />
 			<p>
 				<span data-testid='name' className='name'>
 					{name}

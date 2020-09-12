@@ -1,6 +1,6 @@
 import { Level } from './../DifficultyLevel/DifficultyLevel';
 import { CellValue } from './CellType';
-import { useState, useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { buildGrid, isEmpty, isFull, processGrid, GameResult } from './Utils';
 import AI from '../../Lib/AI';
 
@@ -81,11 +81,11 @@ const levelToDepth = (level: Level) => {
 };
 
 const useGameState = (size: number, level: Level): State => {
-	// console.log('called useGameState!', size);
-
 	const [state, dispatch] = useReducer(gameReducer, initialState);
 
-	const gameResult = processGrid(state.grid, size);
+	const { activePlayer, grid } = state;
+
+	const gameResult = processGrid(grid, size);
 
 	const setCell = (index: number, type: CellValue, player: Player) => {
 		dispatch(setCellValue(index, type, player));
@@ -99,13 +99,11 @@ const useGameState = (size: number, level: Level): State => {
 
 	useEffect(() => {
 		if (gameResult.isDraw || gameResult.winner) return;
-
-		if (state.activePlayer === Player.Robot) {
-			console.log('finding best move', maxDepth);
-			const move = AI.findBestMove(state.grid, size, maxDepth);
+		if (activePlayer === Player.Robot) {
+			const move = AI.findBestMove(grid, size, maxDepth);
 			dispatch(setCellValue(move.index as number, CellValue.O, Player.Robot));
 		}
-	}, [state.activePlayer]);
+	}, [activePlayer]);
 
 	useEffect(() => {
 		newGame();
@@ -116,9 +114,10 @@ const useGameState = (size: number, level: Level): State => {
 	}, [size]);
 
 	return {
-		...state,
-		isEmpty: isEmpty(state.grid),
-		isFull: isFull(state.grid),
+		grid,
+		activePlayer,
+		isEmpty: isEmpty(grid),
+		isFull: isFull(grid),
 		gameResult,
 		setCell,
 		newGame,

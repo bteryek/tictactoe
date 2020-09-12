@@ -1,7 +1,6 @@
 import { CellValue } from './CellType';
 import { Player } from './useGameState';
-import _, { max } from 'lodash';
-import Cell from '../Cell';
+import _ from 'lodash';
 
 export const buildGrid = (gridSize: number): CellValue[] => {
 	const grid = [];
@@ -96,93 +95,72 @@ const verticalWinnerCheck = (grid: CellValue[], gridSize: number) => {
 };
 
 const diagonalWinnerCheck = (grid: CellValue[], gridSize: number) => {
-	const maxTopStartCheckLeft = gridSize - 3;
-	const maxRowsFromTop = gridSize - 3;
-	const maxTopStartCheckRight = gridSize - maxTopStartCheckLeft - 1;
+	if (gridSize === 3) {
+		const possibleWinners = [
+			[0, 4, 8],
+			[2, 4, 6],
+		];
 
-	const maxBottomStartCheckLeft = gridSize * gridSize - 3;
-	const maxBottomStartCheckRight = gridSize * gridSize - (gridSize - 3 + 1);
-	const maxRowsFromBottom = gridSize - 3 + 1;
+		for (let i in possibleWinners) {
+			const sequence = possibleWinners[i];
+			const values = sequence.map((index) => grid[index]);
 
-	// console.log('max rows', maxRowsFromTop, maxRowsFromBottom);
-
-	// console.log(
-	// 	`diagonal check: gridSize ${gridSize} maxTopStartCheckLeft ${maxTopStartCheckLeft} maxTopStartCheckRight: ${maxTopStartCheckRight}`
-	// );
-
-	// console.log(
-	// 	`diagonal check: maxBottomStartCheckLeft ${maxBottomStartCheckLeft} maxBottomStartCheckRight: ${maxBottomStartCheckRight}`
-	// );
-
-	for (let r = 0; r < gridSize; r++) {
-		for (let c = 0; c < gridSize; c++) {
-			// check left to right first
-			const currentIndex = r * gridSize + c;
-
-			// console.log(`current index: ${currentIndex} - r: ${r} c: ${c}`);
-
-			const leftToRightOne = currentIndex;
-			const leftToRightTwo = currentIndex + gridSize + 1;
-			const leftToRightThree = currentIndex + gridSize * 2 + 2;
-
-			const leftToRightSequence = [
-				grid[leftToRightOne],
-				grid[leftToRightTwo],
-				grid[leftToRightThree],
-			];
-
-			// check right to left
-			// console.log(
-			// 	`current index: ${currentIndex} one: ${leftToRightOne} two: ${leftToRightTwo} three: ${leftToRightThree}`
-			// );
-			// console.log('seq', sequence);
-
-			if (
-				leftToRightSequence.every(
-					(x) =>
-						x === leftToRightSequence[0] &&
-						leftToRightSequence[0] !== CellValue.Empty
-				)
-			) {
-				// console.log('ltr');
+			if (values.every((v) => v === CellValue.X)) {
 				return {
 					winner: true,
 					isDraw: false,
-					player:
-						grid[leftToRightOne] === CellValue.X ? Player.Human : Player.Robot,
-					sequence: [leftToRightOne, leftToRightTwo, leftToRightThree],
-					orientation: Orientation.Diagonal,
+					player: Player.Human,
+					sequence,
+					orientation: Orientation.Vertical,
 				};
 			}
 
-			const rightToLeftOne = currentIndex;
-			const rightToLeftTwo = currentIndex + gridSize - 1;
-			const rightToLeftThree = currentIndex + gridSize * 2 - 2;
-
-			const rightToLeftSequence = [
-				grid[rightToLeftOne],
-				grid[rightToLeftTwo],
-				grid[rightToLeftThree],
-			];
-
-			// console.log('rtl seq', rightToLeftOne, rightToLeftTwo, rightToLeftThree);
-
-			if (
-				rightToLeftSequence.every(
-					(x) =>
-						x === rightToLeftSequence[0] &&
-						rightToLeftSequence[0] !== CellValue.Empty
-				)
-			) {
-				// console.log('rtl', rightToLeftSequence);
-
+			if (values.every((v) => v === CellValue.O)) {
 				return {
 					winner: true,
 					isDraw: false,
-					player:
-						grid[rightToLeftOne] === CellValue.X ? Player.Human : Player.Robot,
-					sequence: [rightToLeftOne, rightToLeftTwo, rightToLeftThree],
-					orientation: Orientation.Diagonal,
+					player: Player.Robot,
+					sequence,
+					orientation: Orientation.Vertical,
+				};
+			}
+		}
+	}
+
+	if (gridSize === 4) {
+		const possibleWinners = [
+			[0, 5, 10],
+			[1, 6, 11],
+			[4, 9, 14],
+			[5, 10, 15],
+			[6, 9, 12],
+			[2, 5, 8],
+			[3, 6, 9],
+			[6, 9, 12],
+			[7, 10, 13],
+		];
+
+		for (let i in possibleWinners) {
+			const sequence = possibleWinners[i];
+			const values = sequence.map((index) => grid[index]);
+
+			if (values.every((v) => v === CellValue.X)) {
+				return {
+					winner: true,
+					isDraw: false,
+					player: Player.Human,
+					sequence,
+					orientation: Orientation.Vertical,
+				};
+			}
+
+			if (values.every((v) => v === CellValue.O)) {
+				return {
+					winner: true,
+					isDraw: false,
+					player: Player.Robot,
+					sequence,
+					orientation: Orientation.Vertical,
 				};
 			}
 		}

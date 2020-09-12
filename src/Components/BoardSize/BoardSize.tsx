@@ -7,9 +7,7 @@ import './BoardSize.scss';
 import { RootState } from '../../Store';
 import { setGridSize } from '../../Store/GameState/actions';
 
-interface Props {}
-
-const BoardSize: React.FC<Props> = ({}) => {
+const BoardSize: React.FC = () => {
 	const dispatch = useDispatch();
 	const gridSize = useSelector<RootState>((state) => state.gameState.gridSize);
 

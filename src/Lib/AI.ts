@@ -101,10 +101,7 @@ class AI {
 		gridSize: number,
 		maxDepth: number = 1
 	): Move => {
-		console.log('find best moved called!');
 		const cells = _.chunk(grid, gridSize);
-
-		// console.log('rows', cells);
 
 		let bestVal = -1000;
 		let bestMove: Move = {

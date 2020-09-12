@@ -1,19 +1,16 @@
 import React from 'react';
 import './DifficultyLevel.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { GameState } from '../../Store/GameState/reducer';
 import { RootState } from '../../Store';
 import { setLevel } from '../../Store/GameState/actions';
 import classNames from 'classnames';
-
-interface Props {}
 
 export enum Level {
 	Easy = 'easy',
 	Hard = 'hard',
 }
 
-const DifficultyLevel: React.FC<Props> = ({}) => {
+const DifficultyLevel: React.FC = () => {
 	const dispatch = useDispatch();
 	const level = useSelector<RootState>((state) => state.gameState.level);
 
