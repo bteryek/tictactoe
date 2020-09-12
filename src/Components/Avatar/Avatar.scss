@@ -1,0 +1,18 @@
+$size: 80px;
+
+.Avatar {
+	display: inline-block;
+	img {
+		width: $size;
+		height: $size;
+		border-radius: $size / 2;
+		background: #fff;
+		box-shadow: 0 5px 3px rgba(0, 0, 0, 0.4);
+	}
+	p {
+		text-align: center;
+		text-transform: uppercase;
+		font-size: 18px;
+		font-weight: bold;
+	}
+}
